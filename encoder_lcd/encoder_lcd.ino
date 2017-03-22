@@ -10,8 +10,10 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 const int encoderPinA = 7;     // right (labeled DT on our decoder)
 const int encoderPinB = 8;     // left (labeled CLK on our decoder)
+const int encoderSwitchPin = 9;
 
 volatile unsigned int encoderPos = 0;     // a counter for the dial
+int buttonState = 0;
 
 const int maxVal = 360;
 
@@ -62,6 +64,8 @@ void doEncoderB(){
     }
 } 
 
+
+
 void setup() {
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
@@ -70,12 +74,14 @@ void setup() {
   
   pinMode(encoderPinA, INPUT_PULLUP);
 pinMode(encoderPinB, INPUT_PULLUP);
+pinMode(encoderSwitchPin, INPUT);
 
 // encoder pin on interrupt 0 (pin 7)
 attachInterrupt(0, doEncoderA, CHANGE);
 
 // encoder pin on interrupt 1 (pin 8)
 attachInterrupt(1, doEncoderB, CHANGE); 
+
 }
 
 void loop() {
@@ -83,8 +89,13 @@ void loop() {
   // (note: line 1 is the second row, since counting begins with 0):
   //lcd.setCursor(0, 1);
   //lcd.print("        ");
+  buttonState = digitalRead(encoderSwitchPin);
+  if(buttonState == LOW){
+    encoderPos = 0;
+  }
   lcd.setCursor(0, 1);
   // print the number of seconds since reset:
   lcd.print(encoderPos);  
+  //lcd.print(buttonState); 
   lcd.print("        "); //clear following cells if neccessary
 }
