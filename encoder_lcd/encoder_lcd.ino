@@ -28,8 +28,8 @@ void doEncoderA(){
         if ( A_set && !B_set )
         {
             // Increment or roll over
-            if encoderPos = 360
-            (
+            if (encoderPos == maxVal)
+            {
                 encoderPos = 0;
             }
             else
@@ -49,9 +49,9 @@ void doEncoderB(){
         if( B_set && !A_set )
         {
             // Decrement or roll over
-            if encoderPos = 0
+            if (encoderPos == 0)
             {
-              encoderPos=360
+              encoderPos=maxVal;
             }
             else
             {
@@ -86,7 +86,5 @@ void loop() {
   lcd.setCursor(0, 1);
   // print the number of seconds since reset:
   lcd.print(encoderPos);  
-  lcd.print(" % 360 = ");  
-    lcd.print(encoderPos % 360);  
-  lcd.print("        ");
+  lcd.print("        "); //clear following cells if neccessary
 }
